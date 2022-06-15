@@ -51,12 +51,11 @@ int main() {
         sprintf(stat_path, "/proc/%d/stat", pid);
         pid_stat = fopen(stat_path, "r");
         // procfs pid stat starts with pid, then whitespace and a program name in 
-        // parenthesis. Read and ignore up until the opening (
-        fscanf(pid_stat, "%*d (");
-        // And then everything up until the closing ) goes into the process name
+        // parenthesis. Read and ignore up until the opening ( and then everything
+        // up until the closing ) goes into the process name
         // fscanf is kinda ugly, but I don't want to invest into better base layer for now
         // to avoid it
-        fscanf(pid_stat, "%[^)]", process_name);
+        fscanf(pid_stat, "%*d (%[^)]", process_name);
 
         for (unsigned int i = 0; i < sizeof(known_names); i++) {
             auto known_name = known_names[i];
